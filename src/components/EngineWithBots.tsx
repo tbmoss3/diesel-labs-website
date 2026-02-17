@@ -7,118 +7,6 @@ import * as THREE from 'three';
 
 const EMERALD = '#10B981';
 const EMERALD_GLOW = '#34D399';
-const BOT_COLOR = '#60A5FA'; // Blue for bots
-
-// Simple robot bot
-function Bot({ 
-  position, 
-  scale = 1,
-  workingOn = [0, 0, 0] as [number, number, number],
-  delay = 0
-}: { 
-  position: [number, number, number];
-  scale?: number;
-  workingOn?: [number, number, number];
-  delay?: number;
-}) {
-  const botRef = useRef<THREE.Group>(null);
-  const armRef = useRef<THREE.Group>(null);
-  const headRef = useRef<THREE.Group>(null);
-
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() + delay;
-    
-    if (botRef.current) {
-      // Subtle bobbing motion
-      botRef.current.position.y = position[1] + Math.sin(t * 2) * 0.05;
-    }
-    
-    if (armRef.current) {
-      // Working motion - arm moving back and forth
-      armRef.current.rotation.x = Math.sin(t * 4) * 0.3;
-      armRef.current.rotation.z = Math.sin(t * 3) * 0.2;
-    }
-    
-    if (headRef.current) {
-      // Looking around
-      headRef.current.rotation.y = Math.sin(t * 1.5) * 0.3;
-      headRef.current.rotation.x = Math.sin(t * 2) * 0.1;
-    }
-  });
-
-  return (
-    <group ref={botRef} position={position} scale={scale}>
-      {/* Body */}
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(0.25, 0.35, 0.2)]} />
-        <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.7} />
-      </lineSegments>
-      
-      {/* Head */}
-      <group ref={headRef} position={[0, 0.3, 0]}>
-        <lineSegments>
-          <edgesGeometry args={[new THREE.BoxGeometry(0.2, 0.18, 0.18)]} />
-          <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.8} />
-        </lineSegments>
-        {/* Eyes */}
-        <lineSegments position={[0.05, 0.02, 0.1]}>
-          <edgesGeometry args={[new THREE.CircleGeometry(0.03, 6)]} />
-          <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.9} />
-        </lineSegments>
-        <lineSegments position={[-0.05, 0.02, 0.1]}>
-          <edgesGeometry args={[new THREE.CircleGeometry(0.03, 6)]} />
-          <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.9} />
-        </lineSegments>
-        {/* Antenna */}
-        <lineSegments position={[0, 0.15, 0]}>
-          <edgesGeometry args={[new THREE.CylinderGeometry(0.01, 0.01, 0.1, 4)]} />
-          <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.6} />
-        </lineSegments>
-        <lineSegments position={[0, 0.22, 0]}>
-          <edgesGeometry args={[new THREE.SphereGeometry(0.025, 4, 4)]} />
-          <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.8} />
-        </lineSegments>
-      </group>
-      
-      {/* Working arm */}
-      <group ref={armRef} position={[0.15, 0.1, 0]}>
-        {/* Upper arm */}
-        <lineSegments position={[0.1, 0, 0]} rotation={[0, 0, -0.3]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(0.18, 0.06, 0.06)]} />
-          <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.6} />
-        </lineSegments>
-        {/* Lower arm / tool */}
-        <lineSegments position={[0.22, -0.05, 0]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(0.12, 0.05, 0.05)]} />
-          <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.7} />
-        </lineSegments>
-        {/* Sparks effect */}
-        <lineSegments position={[0.28, -0.08, 0]}>
-          <edgesGeometry args={[new THREE.OctahedronGeometry(0.04, 0)]} />
-          <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.5 + Math.random() * 0.5} />
-        </lineSegments>
-      </group>
-      
-      {/* Other arm (idle) */}
-      <group position={[-0.15, 0.05, 0]}>
-        <lineSegments position={[-0.08, -0.05, 0]} rotation={[0, 0, 0.5]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(0.14, 0.05, 0.05)]} />
-          <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.5} />
-        </lineSegments>
-      </group>
-      
-      {/* Legs */}
-      <lineSegments position={[0.06, -0.25, 0]}>
-        <edgesGeometry args={[new THREE.BoxGeometry(0.06, 0.2, 0.06)]} />
-        <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.5} />
-      </lineSegments>
-      <lineSegments position={[-0.06, -0.25, 0]}>
-        <edgesGeometry args={[new THREE.BoxGeometry(0.06, 0.2, 0.06)]} />
-        <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.5} />
-      </lineSegments>
-    </group>
-  );
-}
 
 // V8 Piston component with animation
 function V8Piston({ 
@@ -247,13 +135,14 @@ function V8EngineBlock() {
   );
 }
 
-// Complete scene with engine and bots
+// Complete scene with rotating engine
 function EngineScene() {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.1) * 0.15 + 0.3;
+      // Slow continuous 360 degree rotation (one full rotation every ~25 seconds)
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.25;
     }
   });
 
@@ -263,8 +152,8 @@ function EngineScene() {
   const cylinderSpacing = 0.38;
 
   return (
-    <Float speed={0.6} rotationIntensity={0.05} floatIntensity={0.15}>
-      <group ref={groupRef} rotation={[0.1, 0.3, 0]} scale={0.9}>
+    <Float speed={0.6} rotationIntensity={0.02} floatIntensity={0.1}>
+      <group ref={groupRef} rotation={[0.15, 0, 0]} scale={1.0}>
         <V8EngineBlock />
         
         {leftBankPhases.map((phase, i) => (
@@ -286,41 +175,6 @@ function EngineScene() {
         ))}
 
         <V8Crankshaft />
-
-        {/* Bot 1 - Working on top of engine */}
-        <Bot 
-          position={[0.3, 1.3, 0.2]} 
-          scale={0.8}
-          delay={0}
-        />
-        
-        {/* Bot 2 - Working on left side */}
-        <Bot 
-          position={[1.4, 0.2, 0]} 
-          scale={0.7}
-          delay={1.5}
-        />
-        
-        {/* Bot 3 - Working underneath */}
-        <Bot 
-          position={[-0.2, -1.0, 0.8]} 
-          scale={0.6}
-          delay={3}
-        />
-
-        {/* Floating tool bot */}
-        <group position={[-1.2, 0.8, 0.3]}>
-          <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
-            <lineSegments>
-              <edgesGeometry args={[new THREE.SphereGeometry(0.15, 6, 6)]} />
-              <lineBasicMaterial color={BOT_COLOR} transparent opacity={0.6} />
-            </lineSegments>
-            <lineSegments position={[0, 0, 0.12]}>
-              <edgesGeometry args={[new THREE.CircleGeometry(0.05, 6)]} />
-              <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.9} />
-            </lineSegments>
-          </Float>
-        </group>
 
         {/* Glow particles */}
         <GlowParticles />
