@@ -1,10 +1,14 @@
 import Link from 'next/link';
+import EngineBackground from '@/components/EngineBackground';
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
       <section className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center px-6 relative overflow-hidden">
+        {/* 3D Wireframe Engine Background */}
+        <EngineBackground />
+        
         {/* Background Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
         
