@@ -259,6 +259,55 @@ function GlowParticles() {
   );
 }
 
+// Simple single-piston engine for mobile
+function MobileEngine() {
+  const groupRef = useRef<THREE.Group>(null);
+  const pistonRef = useRef<THREE.Group>(null);
+
+  useFrame(({ clock }) => {
+    if (groupRef.current) {
+      // Slow rotation only
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.3;
+    }
+    if (pistonRef.current) {
+      // Simple up/down motion
+      pistonRef.current.position.y = Math.sin(clock.getElapsedTime() * 2) * 0.3;
+    }
+  });
+
+  return (
+    <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.15}>
+      <group ref={groupRef} rotation={[0.2, 0, 0]} scale={1.5}>
+        {/* Simple engine block */}
+        <lineSegments>
+          <edgesGeometry args={[new THREE.BoxGeometry(1, 1.2, 0.8)]} />
+          <lineBasicMaterial color={EMERALD} transparent opacity={0.35} />
+        </lineSegments>
+
+        {/* Single cylinder */}
+        <lineSegments position={[0, 0.8, 0]}>
+          <edgesGeometry args={[new THREE.CylinderGeometry(0.3, 0.3, 0.8, 6)]} />
+          <lineBasicMaterial color={EMERALD} transparent opacity={0.4} />
+        </lineSegments>
+
+        {/* Piston */}
+        <group ref={pistonRef}>
+          <lineSegments position={[0, 0.8, 0]}>
+            <edgesGeometry args={[new THREE.CylinderGeometry(0.25, 0.25, 0.2, 6)]} />
+            <lineBasicMaterial color={EMERALD_GLOW} transparent opacity={0.6} />
+          </lineSegments>
+        </group>
+
+        {/* Oil pan */}
+        <lineSegments position={[0, -0.8, 0]}>
+          <edgesGeometry args={[new THREE.BoxGeometry(0.9, 0.3, 0.7)]} />
+          <lineBasicMaterial color={EMERALD} transparent opacity={0.25} />
+        </lineSegments>
+      </group>
+    </Float>
+  );
+}
+
 // Main exported component
 export default function WireframeEngine() {
   const [isMobile, setIsMobile] = useState(false);
@@ -280,25 +329,26 @@ export default function WireframeEngine() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Don't render on mobile for performance, or if reduced motion is preferred
-  if (isMobile || isReducedMotion) {
+  // Skip rendering if reduced motion is preferred
+  if (isReducedMotion) {
     return null;
   }
 
+  // Render simplified engine on mobile, full V8 on desktop
   return (
-    <div className="absolute inset-0 pointer-events-none opacity-30" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0, opacity: isMobile ? 0.2 : 0.3 }}>
       <Canvas
-        camera={{ position: [0, 0, 5.5], fov: 50 }}
-        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, isMobile ? 4 : 5.5], fov: isMobile ? 40 : 50 }}
+        dpr={[1, isMobile ? 1 : 1.5]}
         gl={{ 
-          antialias: true,
+          antialias: !isMobile,
           alpha: true,
           powerPreference: 'high-performance'
         }}
         style={{ background: 'transparent' }}
       >
         <ambientLight intensity={0.5} />
-        <V8DieselEngine />
+        {isMobile ? <MobileEngine /> : <V8DieselEngine />}
       </Canvas>
     </div>
   );
