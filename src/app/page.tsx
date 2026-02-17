@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import EngineBackground from '@/components/EngineBackground';
+import EngineWithBots from '@/components/EngineWithBots';
 import TechStack from '@/components/TechStack';
 import CaseStudies from '@/components/CaseStudies';
 import Industries from '@/components/Industries';
@@ -9,55 +10,67 @@ import ScrollAnimation from '@/components/ScrollAnimation';
 export default function Home() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center px-6 relative overflow-hidden">
-        {/* 3D Wireframe Engine Background */}
-        <EngineBackground />
+      {/* Hero Section - Split Layout */}
+      <section className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 flex items-center justify-center px-6 relative overflow-hidden">
+        {/* Mobile: Show background engine */}
+        <div className="lg:hidden">
+          <EngineBackground />
+        </div>
         
         {/* Background Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
         
-        {/* Glow Effect */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
+        {/* Glow Effect - Left side on desktop */}
+        <div className="absolute top-1/2 left-1/4 lg:left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
         
-        <div className="relative z-10 text-center max-w-4xl">
-          {/* Brand */}
-          <div className="mb-6 animate-fade-in-up">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white [text-shadow:_0_0_30px_rgba(255,255,255,0.5),_0_0_60px_rgba(16,185,129,0.3)]">
-              Diesel Labs
-            </h1>
+        {/* Split Layout Container */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-12">
+          
+          {/* Left Side - Engine with Bots (Desktop only) */}
+          <div className="hidden lg:block h-[500px] xl:h-[600px]">
+            <EngineWithBots />
           </div>
           
-          {/* Tagline */}
-          <p className="text-2xl md:text-4xl text-emerald-400 font-light mb-8 tracking-wide animate-fade-in-up stagger-1 [text-shadow:_0_0_20px_rgba(16,185,129,0.6),_0_0_40px_rgba(16,185,129,0.3)]">
-            Build. Maintain. Monitor.
-          </p>
-          
-          {/* Value Prop */}
-          <p className="text-lg md:text-xl text-zinc-200 mb-12 max-w-2xl mx-auto animate-fade-in-up stagger-2 [text-shadow:_0_0_15px_rgba(255,255,255,0.3)]">
-            AI solutions for businesses that want results, not research projects. 
-            We bridge the gap between AI hype and real business value.
-          </p>
-          
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-3">
-            <Link
-              href="/services"
-              className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
-            >
-              Explore Services
-            </Link>
-            <a
-              href="https://calendly.com/diesel-labs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl border border-zinc-700 transition-all duration-300 inline-flex items-center justify-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Book a Call
-            </a>
+          {/* Right Side - Content */}
+          <div className="text-center lg:text-left">
+            {/* Brand */}
+            <div className="mb-6 animate-fade-in-up">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tighter text-white [text-shadow:_0_0_30px_rgba(255,255,255,0.5),_0_0_60px_rgba(16,185,129,0.3)]">
+                Diesel Labs
+              </h1>
+            </div>
+            
+            {/* Tagline */}
+            <p className="text-2xl sm:text-3xl lg:text-4xl text-emerald-400 font-light mb-6 lg:mb-8 tracking-wide animate-fade-in-up stagger-1 [text-shadow:_0_0_20px_rgba(16,185,129,0.6),_0_0_40px_rgba(16,185,129,0.3)]">
+              Build. Maintain. Monitor.
+            </p>
+            
+            {/* Value Prop */}
+            <p className="text-lg lg:text-xl text-zinc-200 mb-8 lg:mb-10 max-w-xl mx-auto lg:mx-0 animate-fade-in-up stagger-2 [text-shadow:_0_0_15px_rgba(255,255,255,0.3)]">
+              AI solutions for businesses that want results, not research projects. 
+              We bridge the gap between AI hype and real business value.
+            </p>
+            
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up stagger-3">
+              <Link
+                href="/services"
+                className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
+              >
+                Explore Services
+              </Link>
+              <a
+                href="https://calendly.com/diesel-labs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl border border-zinc-700 transition-all duration-300 inline-flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Book a Call
+              </a>
+            </div>
           </div>
         </div>
 
