@@ -18,18 +18,18 @@ export default function Home() {
         <div className="relative z-10 text-center max-w-4xl">
           {/* Brand */}
           <div className="mb-6 animate-fade-in-up">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white [text-shadow:_0_0_30px_rgba(255,255,255,0.5),_0_0_60px_rgba(16,185,129,0.3)]">
               Diesel Labs
             </h1>
           </div>
           
           {/* Tagline */}
-          <p className="text-2xl md:text-4xl text-emerald-400 font-light mb-8 tracking-wide animate-fade-in-up stagger-1 drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+          <p className="text-2xl md:text-4xl text-emerald-400 font-light mb-8 tracking-wide animate-fade-in-up stagger-1 [text-shadow:_0_0_20px_rgba(16,185,129,0.6),_0_0_40px_rgba(16,185,129,0.3)]">
             Build. Maintain. Monitor.
           </p>
           
           {/* Value Prop */}
-          <p className="text-lg md:text-xl text-zinc-300 mb-12 max-w-2xl mx-auto animate-fade-in-up stagger-2 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]">
+          <p className="text-lg md:text-xl text-zinc-200 mb-12 max-w-2xl mx-auto animate-fade-in-up stagger-2 [text-shadow:_0_0_15px_rgba(255,255,255,0.3)]">
             AI solutions for businesses that want results, not research projects. 
             We bridge the gap between AI hype and real business value.
           </p>
