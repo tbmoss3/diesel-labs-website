@@ -16,38 +16,43 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
         
         <div className="relative z-10 text-center max-w-4xl">
-          {/* Brand */}
-          <div className="mb-6 animate-fade-in-up">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              Diesel Labs
-            </h1>
-          </div>
+          {/* Dark backdrop for text readability */}
+          <div className="absolute inset-0 -m-8 bg-zinc-950/70 backdrop-blur-sm rounded-3xl" />
           
-          {/* Tagline */}
-          <p className="text-2xl md:text-4xl text-emerald-400 font-light mb-8 tracking-wide animate-fade-in-up stagger-1">
-            Build. Maintain. Monitor.
-          </p>
-          
-          {/* Value Prop */}
-          <p className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto animate-fade-in-up stagger-2">
-            AI solutions for businesses that want results, not research projects. 
-            We bridge the gap between AI hype and real business value.
-          </p>
+          <div className="relative">
+            {/* Brand */}
+            <div className="mb-6 animate-fade-in-up">
+              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+                Diesel Labs
+              </h1>
+            </div>
+            
+            {/* Tagline */}
+            <p className="text-2xl md:text-4xl text-emerald-400 font-light mb-8 tracking-wide animate-fade-in-up stagger-1 drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+              Build. Maintain. Monitor.
+            </p>
+            
+            {/* Value Prop */}
+            <p className="text-lg md:text-xl text-zinc-300 mb-12 max-w-2xl mx-auto animate-fade-in-up stagger-2">
+              AI solutions for businesses that want results, not research projects. 
+              We bridge the gap between AI hype and real business value.
+            </p>
           
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-3">
-            <Link
-              href="/services"
-              className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
-            >
-              Explore Services
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl border border-zinc-700 transition-all duration-300"
-            >
-              Get in Touch
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-3">
+              <Link
+                href="/services"
+                className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
+              >
+                Explore Services
+              </Link>
+              <Link
+                href="/contact"
+                className="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl border border-zinc-700 transition-all duration-300"
+              >
+                Get in Touch
+              </Link>
+            </div>
           </div>
         </div>
 

@@ -229,7 +229,7 @@ export default function WireframeEngine() {
   }
 
   return (
-    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 pointer-events-none opacity-40" style={{ zIndex: 0 }}>
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         dpr={[1, 1.5]} // Limit pixel ratio for performance
