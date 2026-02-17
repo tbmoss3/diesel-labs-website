@@ -111,52 +111,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-24 px-6 bg-zinc-900/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <p className="text-emerald-400 font-medium mb-2">Founder</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Benton Moss
-              </h2>
-              <p className="text-zinc-400 text-lg mb-6">
-                Benton brings a unique perspective to AI services—one grounded in 
-                real business operations, not just technology. With a background 
-                spanning property management, business operations, and technology 
-                investment, he understands what it takes to make AI actually work 
-                in practice.
-              </p>
-              <p className="text-zinc-400 text-lg mb-6">
-                Before founding Diesel Labs, Benton spent years building and 
-                optimizing operational systems, learning firsthand where technology 
-                creates value and where it falls short. This experience shapes our 
-                approach: we don't just build AI—we build AI that fits into how 
-                businesses actually work.
-              </p>
-              <div className="flex gap-4">
-                <a 
-                  href="mailto:benton@diesel.dev" 
-                  className="text-emerald-400 hover:text-emerald-300 transition-colors"
-                >
-                  benton@diesel.dev
-                </a>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2 flex justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-2xl blur-2xl" />
-                <div className="relative w-64 h-64 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center">
-                  <div className="w-32 h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center">
-                    <span className="text-4xl font-bold text-white">BM</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-24 px-6 bg-zinc-950">
         <div className="max-w-4xl mx-auto text-center">

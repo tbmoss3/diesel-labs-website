@@ -15,6 +15,28 @@ const caseStudies = [
     ),
   },
   {
+    title: 'Yard Management System',
+    category: 'Logistics & Operations',
+    description: 'Full-stack yard management platform with real-time trailer tracking, automated check-in/out, driver mobile app, and intelligent dock scheduling.',
+    results: ['Real-time asset visibility', 'Mobile field app', 'Automated dispatch'],
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Quantitative Research Platform',
+    category: 'Financial Services',
+    description: 'AI-powered research platform for quantitative analysis, featuring automated data pipelines, backtesting engines, and algorithmic strategy development.',
+    results: ['Automated data pipelines', 'Strategy backtesting', 'Real-time analytics'],
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      </svg>
+    ),
+  },
+  {
     title: 'Property Management Automation',
     category: 'Workflow Automation',
     description: 'End-to-end workflow automation connecting property management software with maintenance dispatch, reducing manual data entry by 80%.',
@@ -22,17 +44,6 @@ const caseStudies = [
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Real-time Command Center',
-    category: 'Dashboard & Monitoring',
-    description: 'Unified command center displaying live deployments, system health, and metrics across multiple services and AI agents.',
-    results: ['Instant visibility', 'Proactive alerts', 'Single pane of glass'],
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
       </svg>
     ),
   },
@@ -53,7 +64,7 @@ export default function CaseStudies() {
           </div>
         </ScrollAnimation>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {caseStudies.map((study, index) => (
             <ScrollAnimation key={study.title} delay={index * 100}>
               <div className="group h-full p-6 bg-zinc-900 border border-zinc-800 rounded-2xl hover:border-emerald-500/50 transition-all duration-300">
