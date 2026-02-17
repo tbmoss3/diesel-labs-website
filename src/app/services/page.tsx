@@ -43,7 +43,6 @@ export default function ServicesPage() {
                 'ROI projections',
               ]}
               engagement="2-4 weeks"
-              price="$10,000 - $25,000"
             />
 
             {/* Custom AI Development */}
@@ -63,7 +62,6 @@ export default function ServicesPage() {
                 'Data pipeline development',
               ]}
               engagement="4-12 weeks"
-              price="$25,000 - $150,000"
             />
 
             {/* AI Integration */}
@@ -82,7 +80,6 @@ export default function ServicesPage() {
                 'Third-party AI tool implementation',
               ]}
               engagement="2-6 weeks"
-              price="$15,000 - $75,000"
             />
 
             {/* Maintenance & Optimization */}
@@ -101,7 +98,6 @@ export default function ServicesPage() {
                 'Ongoing support & enhancement',
               ]}
               engagement="Monthly retainer"
-              price="$2,500 - $10,000/month"
             />
           </div>
         </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Metadata } from 'next';
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -14,8 +13,16 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder - in production, this would send to an API
-    console.log('Form submitted:', formState);
+    
+    // Build mailto link with form data
+    const subject = encodeURIComponent(`Contact from ${formState.name}${formState.company ? ` at ${formState.company}` : ''}`);
+    const body = encodeURIComponent(
+      `Name: ${formState.name}\nEmail: ${formState.email}\nCompany: ${formState.company || 'N/A'}\n\nMessage:\n${formState.message}`
+    );
+    
+    // Open mailto link
+    window.location.href = `mailto:info@diesel.dev?subject=${subject}&body=${body}`;
+    
     setSubmitted(true);
   };
 
@@ -40,6 +47,31 @@ export default function ContactPage() {
         </div>
       </section>
 
+      {/* Book a Call CTA */}
+      <section className="py-12 px-6 bg-zinc-900 border-b border-zinc-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-emerald-500/10 to-zinc-900 border border-emerald-500/30 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl font-bold text-white mb-3">
+              Skip the back-and-forth
+            </h2>
+            <p className="text-zinc-400 mb-6 max-w-xl mx-auto">
+              Book a 30-minute discovery call directly on our calendar. We'll discuss your challenges and explore how AI can help.
+            </p>
+            <a
+              href="https://calendly.com/diesel-labs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Book a Call
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section className="py-24 px-6 bg-zinc-900">
         <div className="max-w-6xl mx-auto">
@@ -47,7 +79,7 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div>
               <h2 className="text-2xl font-bold text-white mb-6">
-                Let's talk about your project
+                Or send us a message
               </h2>
               <p className="text-zinc-400 mb-8">
                 Every engagement starts with a conversation. Tell us about your 
@@ -116,10 +148,16 @@ export default function ContactPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-zinc-400">
-                    Thanks for reaching out. We'll be in touch within 24 hours.
+                  <h3 className="text-2xl font-bold text-white mb-2">Opening Email Client</h3>
+                  <p className="text-zinc-400 mb-6">
+                    Your email client should open with your message pre-filled. Just hit send!
                   </p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="text-emerald-400 hover:text-emerald-300 text-sm"
+                  >
+                    Send another message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -194,7 +232,7 @@ export default function ContactPage() {
                   </button>
 
                   <p className="text-xs text-zinc-500 text-center">
-                    By submitting this form, you agree to our privacy policy.
+                    This will open your email client with your message pre-filled.
                   </p>
                 </form>
               )}
