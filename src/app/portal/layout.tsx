@@ -12,7 +12,7 @@ export default async function PortalLayout({
 
   // Redirect to login if not authenticated
   if (!session) {
-    redirect('/portal/login');
+    redirect('/login');
   }
 
   return (
