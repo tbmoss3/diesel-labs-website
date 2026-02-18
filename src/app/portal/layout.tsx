@@ -16,7 +16,7 @@ export default async function PortalLayout({
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="fixed inset-0 bg-zinc-950 z-50 overflow-auto -mt-16">
       <Sidebar />
       <div className="ml-64">
         <PortalHeader user={session.user} />

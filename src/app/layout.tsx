@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Providers from "./providers";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -67,11 +68,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-zinc-950 text-zinc-100`}
       >
-        <Header />
-        <main className="pt-16">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Header />
+          <main className="pt-16">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
