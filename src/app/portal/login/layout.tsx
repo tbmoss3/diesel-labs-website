@@ -4,5 +4,9 @@ export default function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <div className="fixed inset-0 bg-zinc-950 z-50 overflow-auto -mt-16">
+      {children}
+    </div>
+  );
 }
