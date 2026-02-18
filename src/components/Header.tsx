@@ -39,6 +39,12 @@ export default function Header() {
               </Link>
             ))}
             <Link
+              href="/login"
+              className="text-zinc-400 hover:text-emerald-400 transition-colors text-sm font-medium"
+            >
+              Client Login
+            </Link>
+            <Link
               href="/contact"
               className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium rounded-lg transition-colors"
             >
@@ -91,6 +97,13 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-zinc-400 hover:text-emerald-400 transition-colors text-sm font-medium"
+              >
+                Client Login
+              </Link>
               <Link
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
