@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import StatusBadge from '@/components/portal/StatusBadge';
 import CommitFeed from '@/components/portal/CommitFeed';
+import IssuesList from '@/components/portal/IssuesList';
 import HealthMonitor from '@/components/portal/HealthMonitor';
 
 // Mock data - will be replaced with real API calls
@@ -13,6 +14,8 @@ const mockProject = {
   description: 'Automated phone intake system for service calls with intelligent routing, natural language understanding, and Jobber CRM integration. Handles incoming calls 24/7, collects caller information, and creates service requests automatically.',
   status: 'active' as const,
   repoUrl: 'https://github.com/tbmoss3/voice-agent',
+  repoOwner: 'tbmoss3',
+  repoName: 'voice-agent',
   lastUpdated: '2 hours ago',
   progress: 75,
   features: {
@@ -40,14 +43,16 @@ const mockProject = {
       lastCheck: '30s ago',
     },
   ],
-  commits: [
-    { sha: 'abc1234567890', message: 'feat: add sentiment analysis to call processing', author: 'Ben M.', date: '2h ago', branch: 'main' },
-    { sha: 'def2345678901', message: 'fix: handle edge case in voicemail detection', author: 'Ben M.', date: '5h ago', branch: 'main' },
-    { sha: 'ghi3456789012', message: 'chore: update dependencies', author: 'Ben M.', date: '1d ago', branch: 'main' },
-    { sha: 'jkl4567890123', message: 'feat: implement Jobber webhook handler', author: 'Ben M.', date: '2d ago', branch: 'main' },
-    { sha: 'mno5678901234', message: 'refactor: improve call routing logic', author: 'Ben M.', date: '3d ago', branch: 'main' },
-  ],
 };
+
+interface ProjectSummary {
+  description: string;
+  techStack: string[];
+  recentActivity: string;
+  featuresBuilt: string[];
+  featuresPlanned: string[];
+  generatedAt: string;
+}
 
 const tabs = [
   { id: 'overview', label: 'Overview' },
@@ -57,7 +62,33 @@ const tabs = [
 
 export default function ProjectDetailPage() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [summary, setSummary] = useState<ProjectSummary | null>(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
   const project = mockProject;
+
+  // Fetch AI summary when component mounts
+  useEffect(() => {
+    if (!project.repoOwner || !project.repoName) return;
+
+    const fetchSummary = async () => {
+      setSummaryLoading(true);
+      try {
+        const response = await fetch(
+          `/api/github/summary?owner=${encodeURIComponent(project.repoOwner)}&repo=${encodeURIComponent(project.repoName)}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setSummary(data.summary);
+        }
+      } catch (err) {
+        console.error('Failed to fetch summary:', err);
+      } finally {
+        setSummaryLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [project.repoOwner, project.repoName]);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -80,7 +111,21 @@ export default function ProjectDetailPage() {
               <h1 className="text-2xl font-bold text-white">{project.name}</h1>
               <StatusBadge status={project.status} />
             </div>
-            <p className="text-zinc-400 max-w-3xl">{project.description}</p>
+            <p className="text-zinc-400 max-w-3xl">
+              {summary?.description || project.description}
+            </p>
+            {summary?.techStack && summary.techStack.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {summary.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 text-xs bg-zinc-800 text-zinc-400 rounded-full"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           {project.repoUrl && (
             <a
@@ -100,6 +145,12 @@ export default function ProjectDetailPage() {
           <span>Last updated: {project.lastUpdated}</span>
           <span>•</span>
           <span>{project.deployments.filter(d => d.status === 'healthy').length}/{project.deployments.length} deployments healthy</span>
+          {summary?.recentActivity && (
+            <>
+              <span>•</span>
+              <span className="text-emerald-400">{summary.recentActivity}</span>
+            </>
+          )}
         </div>
       </div>
 
@@ -144,17 +195,17 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            {/* Features */}
+            {/* Features from AI Summary or fallback to mock */}
             <div className="space-y-4">
               <div>
                 <h4 className="text-sm font-medium text-emerald-400 mb-2 flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Completed ({project.features.completed.length})
+                  Completed ({(summary?.featuresBuilt || project.features.completed).length})
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {project.features.completed.map((feature, index) => (
+                  {(summary?.featuresBuilt || project.features.completed).map((feature, index) => (
                     <span key={index} className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full border border-emerald-500/20">
                       {feature}
                     </span>
@@ -183,10 +234,10 @@ export default function ProjectDetailPage() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Planned ({project.features.planned.length})
+                  Planned ({(summary?.featuresPlanned || project.features.planned).length})
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {project.features.planned.map((feature, index) => (
+                  {(summary?.featuresPlanned || project.features.planned).map((feature, index) => (
                     <span key={index} className="px-3 py-1 bg-zinc-800 text-zinc-400 text-sm rounded-full border border-zinc-700">
                       {feature}
                     </span>
@@ -203,8 +254,10 @@ export default function ProjectDetailPage() {
               <p className="text-2xl font-bold text-white">{project.deployments.length}</p>
             </div>
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-              <h4 className="text-sm text-zinc-500 mb-1">Commits (30d)</h4>
-              <p className="text-2xl font-bold text-white">{project.commits.length}</p>
+              <h4 className="text-sm text-zinc-500 mb-1">Tech Stack</h4>
+              <p className="text-2xl font-bold text-white">
+                {summaryLoading ? '...' : (summary?.techStack?.length || '-')}
+              </p>
             </div>
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
               <h4 className="text-sm text-zinc-500 mb-1">Uptime</h4>
@@ -216,7 +269,7 @@ export default function ProjectDetailPage() {
 
       {activeTab === 'development' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Commits */}
+          {/* Commits - Now with auto-fetch */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Recent Commits</h3>
@@ -234,60 +287,38 @@ export default function ProjectDetailPage() {
                 </a>
               )}
             </div>
-            <CommitFeed commits={project.commits} />
+            <CommitFeed 
+              owner={project.repoOwner}
+              repo={project.repoName}
+              limit={8}
+              autoFetch={true}
+            />
           </div>
 
-          {/* Features Roadmap */}
+          {/* Issues - Now with real data */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Features Roadmap</h3>
-            <div className="space-y-6">
-              {/* Completed */}
-              <div>
-                <h4 className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-3">Completed</h4>
-                <div className="space-y-2">
-                  {project.features.completed.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 text-sm">
-                      <div className="w-5 h-5 bg-emerald-500/20 rounded flex items-center justify-center">
-                        <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <span className="text-zinc-300 line-through">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* In Progress */}
-              <div>
-                <h4 className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-3">In Progress</h4>
-                <div className="space-y-2">
-                  {project.features.inProgress.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 text-sm">
-                      <div className="w-5 h-5 bg-blue-500/20 rounded flex items-center justify-center">
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                      </div>
-                      <span className="text-white">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Planned */}
-              <div>
-                <h4 className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-3">Planned</h4>
-                <div className="space-y-2">
-                  {project.features.planned.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 text-sm">
-                      <div className="w-5 h-5 bg-zinc-800 rounded flex items-center justify-center">
-                        <div className="w-2 h-2 bg-zinc-600 rounded-full" />
-                      </div>
-                      <span className="text-zinc-400">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Issues & Features</h3>
+              {project.repoUrl && (
+                <a
+                  href={`${project.repoUrl}/issues`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                >
+                  View all
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              )}
             </div>
+            <IssuesList 
+              owner={project.repoOwner}
+              repo={project.repoName}
+              autoFetch={true}
+              showTabs={true}
+            />
           </div>
         </div>
       )}

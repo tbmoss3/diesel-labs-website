@@ -41,7 +41,7 @@ export default function IssuesList({
   showTabs = true,
 }: IssuesListProps) {
   const [issues, setIssues] = useState<Issue[]>(initialIssues || []);
-  const [loading, setLoading] = useState(autoFetch && owner && repo);
+  const [loading, setLoading] = useState<boolean>(!!(autoFetch && owner && repo));
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
 

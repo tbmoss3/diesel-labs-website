@@ -41,7 +41,7 @@ export default function CommitFeed({
   autoFetch = false 
 }: CommitFeedProps) {
   const [commits, setCommits] = useState<Commit[]>(initialCommits || []);
-  const [loading, setLoading] = useState(autoFetch && owner && repo);
+  const [loading, setLoading] = useState<boolean>(!!(autoFetch && owner && repo));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
