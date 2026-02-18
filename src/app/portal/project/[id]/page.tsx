@@ -297,7 +297,7 @@ export default function ProjectDetailPage() {
           {/* Deployment Health */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Deployment Health</h3>
-            <HealthMonitor deployments={project.deployments} />
+            <HealthMonitor projectId={project.id} />
           </div>
 
           {/* Metrics placeholder */}
